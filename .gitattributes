@@ -1,0 +1,10 @@
+* text=auto
+*.cs text eol=lf diff=csharp
+*.csproj text eol=lf
+*.props text eol=lf
+*.slnx text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.png binary
+*.ico binary
+legacy/** -text
