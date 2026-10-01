@@ -150,6 +150,8 @@ var tests = new (string Name, Func<Task> Run)[]
             new AppSettings { IntervalMilliseconds = 0 },
             new AppSettings { SchemaVersion = 2 },
             new AppSettings { Rules = [rule with { Mode = (MatchMode)99 }] },
+            new AppSettings { Rules = [rule with { Pattern = null! }] },
+            new AppSettings { Rules = [rule with { Id = Guid.Empty }] },
         }) await Throws<ArgumentException>(() => Task.FromResult(settings.Validate()));
     }),
     ("Settings round trip preserves normalized rules and interval", async () =>

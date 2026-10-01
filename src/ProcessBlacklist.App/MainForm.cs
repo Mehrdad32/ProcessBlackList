@@ -59,7 +59,7 @@ public sealed class MainForm : Form
         Font = new Font("Segoe UI", 9.5F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1130, 700);
-        MinimumSize = new Size(900, 600);
+        MinimumSize = new Size(800, 520);
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = UiTheme.Background;
         ForeColor = UiTheme.Text;
@@ -109,7 +109,7 @@ public sealed class MainForm : Form
         var headerColor = SystemInformation.HighContrast ? SystemColors.WindowText : Color.White;
         header.Controls.Add(new Label { Text = "ProcessBlacklist", AutoSize = true, Font = new Font(Font.FontFamily, 21F, FontStyle.Bold), ForeColor = headerColor }, 0, 0);
         var version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "2.0.0-alpha.1";
-        header.Controls.Add(new Label { Text = "v" + version, AutoSize = true, Anchor = AnchorStyles.Right, ForeColor = headerColor }, 1, 0);
+        header.Controls.Add(new Label { Name = "VersionLabel", Text = "v" + version, AutoSize = true, Anchor = AnchorStyles.Right, ForeColor = headerColor }, 1, 0);
         var description = new Label { Text = "See what matches. Choose when to act.", AutoSize = true, ForeColor = headerColor, Margin = new Padding(0, 3, 0, 0) };
         header.Controls.Add(description, 0, 1);
         header.SetColumnSpan(description, 2);

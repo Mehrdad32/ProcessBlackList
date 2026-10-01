@@ -9,6 +9,7 @@ public sealed record BlacklistRule(Guid Id, string Pattern, MatchMode Mode, bool
 
     public BlacklistRule Validate()
     {
+        ArgumentNullException.ThrowIfNull(Pattern);
         if (Id == Guid.Empty) throw new ArgumentException("A rule needs a non-empty ID.");
         if (!Enum.IsDefined(Mode)) throw new ArgumentException("Unknown rule matching mode.");
         return this with { Pattern = ValidatePattern(Pattern.Trim()) };

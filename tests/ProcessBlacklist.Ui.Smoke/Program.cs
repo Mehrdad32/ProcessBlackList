@@ -1,4 +1,5 @@
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using ProcessBlacklist.App;
 using ProcessBlacklist.Core;
 
@@ -61,16 +62,16 @@ internal static class Program
                 platform.Processes = FakePlatform.Initial;
                 Find<Button>(main, "RefreshProcesses").PerformClick();
                 await Until(() => processGrid.Rows.Count == 3);
-                main.ClientSize = new Size(1130, 700);
+                main.ClientSize = new Size(960, 680);
                 Capture(main, Path.Combine(output, "main.png"));
-                main.ClientSize = new Size(900, 600);
+                main.ClientSize = new Size(820, 560);
                 Capture(main, Path.Combine(output, "main-compact.png"));
-                main.ClientSize = new Size(1130, 700);
+                main.ClientSize = new Size(960, 680);
                 main.Font = new Font("Segoe UI", 12F);
-                main.ClientSize = new Size(1130, 700);
+                main.ClientSize = new Size(960, 680);
                 Capture(main, Path.Combine(output, "main-large-text.png"));
                 main.Font = new Font("Segoe UI", 9.5F);
-                main.ClientSize = new Size(1130, 700);
+                main.ClientSize = new Size(960, 680);
                 Find<TabControl>(main, "MainTabs").SelectedIndex = 1;
                 Capture(main, Path.Combine(output, "activity.png"));
                 Console.WriteLine("PASS UI smoke: stopped preview startup, rule validation/persistence/toggling, preview with no writes, failed-save preservation and identity-based selection.");
@@ -93,10 +94,26 @@ internal static class Program
     {
         form.PerformLayout();
         form.Refresh();
+        Require(GetClientRect(form.Handle, out var client), "Unable to read the native client area.");
+        foreach (var name in new[] { "VersionLabel", "StartMonitoring", "OperationStatus", "RuleGrid", "AddRule" })
+        {
+            var control = form.Controls.Find(name, true).Single();
+            if (!control.Visible) continue;
+            var bounds = form.RectangleToClient(control.RectangleToScreen(control.ClientRectangle));
+            Require(bounds.Left >= 0 && bounds.Top >= 0 && bounds.Right <= client.Right && bounds.Bottom <= client.Bottom,
+                $"{name} is clipped by the native window: {bounds}, viewport {client.Right}x{client.Bottom}.");
+        }
         using var bitmap = new Bitmap(form.Width, form.Height);
         form.DrawToBitmap(bitmap, new Rectangle(Point.Empty, bitmap.Size));
         bitmap.Save(path, ImageFormat.Png);
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct NativeRect { public int Left; public int Top; public int Right; public int Bottom; }
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool GetClientRect(IntPtr window, out NativeRect rectangle);
 }
 
 internal sealed class FakePlatform : IProcessPlatform
