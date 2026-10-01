@@ -11,7 +11,7 @@ public sealed record BlacklistRule(Guid Id, string Pattern, MatchMode Mode, bool
     {
         if (Id == Guid.Empty) throw new ArgumentException("A rule needs a non-empty ID.");
         if (!Enum.IsDefined(Mode)) throw new ArgumentException("Unknown rule matching mode.");
-        return this with { Pattern = Normalize(Pattern) };
+        return this with { Pattern = ValidatePattern(Pattern.Trim()) };
     }
 
     public bool Matches(string processName) => Mode switch
@@ -26,6 +26,12 @@ public sealed record BlacklistRule(Guid Id, string Pattern, MatchMode Mode, bool
         ArgumentNullException.ThrowIfNull(value);
         var name = value.Trim();
         if (name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)) name = name[..^4];
+        return ValidatePattern(name);
+    }
+
+    // Stored patterns are canonical base names. Re-validation must not strip a second suffix.
+    private static string ValidatePattern(string name)
+    {
         if (string.IsNullOrWhiteSpace(name) || name.Length > 260 || name is "." or ".." ||
             name.Any(char.IsControl) || name.IndexOfAny(['\\', '/', ':', '*', '?', '"', '<', '>', '|']) >= 0)
             throw new ArgumentException("Enter a process name or name fragment, without a path or wildcard.");

@@ -145,7 +145,7 @@ var tests = new (string Name, Func<Task> Run)[]
     {
         var rule = BlacklistRule.Create("notepad", MatchMode.Exact);
         foreach (var settings in new[] {
-            new AppSettings { Rules = [rule, rule with { Id = Guid.NewGuid(), Pattern = "NOTEPAD.EXE" }] },
+            new AppSettings { Rules = [rule, rule with { Id = Guid.NewGuid(), Pattern = "NOTEPAD" }] },
             new AppSettings { Rules = [rule, rule with { Pattern = "other" }] },
             new AppSettings { IntervalMilliseconds = 0 },
             new AppSettings { SchemaVersion = 2 },

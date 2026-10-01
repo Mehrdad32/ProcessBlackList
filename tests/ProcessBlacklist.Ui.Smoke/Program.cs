@@ -2,6 +2,8 @@ using System.Drawing.Imaging;
 using ProcessBlacklist.App;
 using ProcessBlacklist.Core;
 
+namespace ProcessBlacklist.Ui.Smoke;
+
 internal static class Program
 {
     [STAThread]
