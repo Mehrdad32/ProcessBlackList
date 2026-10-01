@@ -2,13 +2,13 @@
 
 [English](README.en.md) · [بیلدهای آزمایشی](https://github.com/Mehrdad32/ProcessBlackList/actions/workflows/ci.yml) · [گزارش مشکل](https://github.com/Mehrdad32/ProcessBlackList/issues)
 
-> این شاخه قدم اول بازسازی نسخهٔ **2.0.0-alpha.1** است. برای تست و بازخورد آماده می‌شود؛ نسخهٔ پایدار قبلی تا تأیید این مرحله روی `master` حفظ شده است.
+> نسخهٔ بازسازی‌شدهٔ **2.0.0-alpha.1** روی شاخهٔ اصلی `master` قرار دارد. این نسخه همچنان آزمایشی است؛ سورس تاریخی ۲۰۱۹ در `legacy/v1` حفظ شده است.
 
 ProcessBlacklist قوانین نام پردازش‌ها را روی ویندوز پایش می‌کند. می‌توانی نتیجهٔ قوانین را در **Preview** ببینی و سپس بستن خودکار پردازش‌های مطابق را فعال کنی.
 
 ## دریافت و اجرا
 
-در [Actions](https://github.com/Mehrdad32/ProcessBlackList/actions/workflows/ci.yml)، آخرین اجرای موفق شاخهٔ `feat/v2-rebuild` را باز کن و artifact مناسب را بگیر:
+در [Actions](https://github.com/Mehrdad32/ProcessBlackList/actions/workflows/ci.yml)، آخرین اجرای موفق شاخهٔ `master` را باز کن و artifact مناسب را بگیر:
 
 | سیستم | Artifact |
 | --- | --- |

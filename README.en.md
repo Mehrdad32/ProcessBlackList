@@ -2,13 +2,13 @@
 
 [فارسی](README.md) · [Test builds](https://github.com/Mehrdad32/ProcessBlackList/actions/workflows/ci.yml) · [Issues](https://github.com/Mehrdad32/ProcessBlackList/issues)
 
-> This branch is the first rebuild step, **2.0.0-alpha.1**, for testing and feedback. The original `master` remains unchanged until this step is approved.
+> The rebuilt **2.0.0-alpha.1** is on the main `master` branch. It remains an alpha for testing and feedback; the historical 2019 sources are preserved under `legacy/v1`.
 
 ProcessBlacklist monitors process-name rules on Windows. Inspect matches in **Preview**, then explicitly enable automatic termination when the rules produce the intended results.
 
 ## Download and run
 
-Open the latest successful `feat/v2-rebuild` run in [Actions](https://github.com/Mehrdad32/ProcessBlackList/actions/workflows/ci.yml) and download an artifact:
+Open the latest successful `master` run in [Actions](https://github.com/Mehrdad32/ProcessBlackList/actions/workflows/ci.yml) and download an artifact:
 
 | System | Artifact |
 | --- | --- |
