@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+*.user
+*.suo
+*.pfx
+*.pdb
+*.zip
+publish/
+ui-preview/
+settings.json
+*.tmp

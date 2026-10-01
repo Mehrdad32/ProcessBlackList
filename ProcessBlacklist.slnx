@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ProcessBlacklist.Core/ProcessBlacklist.Core.csproj" />
+    <Project Path="src/ProcessBlacklist.Windows/ProcessBlacklist.Windows.csproj" />
+    <Project Path="src/ProcessBlacklist.App/ProcessBlacklist.App.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ProcessBlacklist.Core.Tests/ProcessBlacklist.Core.Tests.csproj" />
+    <Project Path="tests/ProcessBlacklist.Windows.Tests/ProcessBlacklist.Windows.Tests.csproj" />
+    <Project Path="tests/ProcessBlacklist.Ui.Smoke/ProcessBlacklist.Ui.Smoke.csproj" />
+  </Folder>
+</Solution>

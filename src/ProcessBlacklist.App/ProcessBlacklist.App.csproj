@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <AssemblyName>ProcessBlacklist</AssemblyName>
+    <Version>2.0.0-alpha.1</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Product>ProcessBlacklist</Product>
+    <Authors>Mehrdad32</Authors>
+    <Description>Preview and enforce process name rules on Windows.</Description>
+    <RepositoryUrl>https://github.com/Mehrdad32/ProcessBlackList</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../ProcessBlacklist.Core/ProcessBlacklist.Core.csproj" />
+    <ProjectReference Include="../ProcessBlacklist.Windows/ProcessBlacklist.Windows.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,76 @@
+name: ProcessBlacklist CI
+
+on:
+  push:
+    branches: [master, 'feat/**']
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+      - name: Run Core regression tests with simulated processes
+        run: dotnet run --project tests/ProcessBlacklist.Core.Tests -c Release
+
+  windows-validation:
+    needs: core-tests
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build solution with warnings treated as errors
+        run: dotnet build ProcessBlacklist.slnx -c Release
+      - name: Test native handles using only owned test children
+        timeout-minutes: 3
+        run: dotnet run --project tests/ProcessBlacklist.Windows.Tests -c Release --no-build
+      - name: Test native UI with simulated processes and capture screenshots
+        timeout-minutes: 3
+        run: dotnet run --project tests/ProcessBlacklist.Ui.Smoke -c Release --no-build -- ui-preview
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ProcessBlacklist-ui-preview
+          path: ui-preview/
+          if-no-files-found: error
+
+  windows-build:
+    needs: [core-tests, windows-validation]
+    runs-on: windows-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        rid: [win-x64, win-x86]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+      - name: Publish portable Windows app
+        run: dotnet publish src/ProcessBlacklist.App -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:PublishTrimmed=false -o publish/${{ matrix.rid }}
+      - name: Include documentation
+        env:
+          BUILD_RID: ${{ matrix.rid }}
+        run: |
+          Copy-Item README.md, README.en.md, CHANGELOG.md -Destination "publish/$env:BUILD_RID"
+          Copy-Item docs -Destination "publish/$env:BUILD_RID" -Recurse
+          Remove-Item "publish/$env:BUILD_RID/*.pdb" -ErrorAction SilentlyContinue
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ProcessBlacklist-${{ matrix.rid }}
+          path: publish/${{ matrix.rid }}/
+          if-no-files-found: error
